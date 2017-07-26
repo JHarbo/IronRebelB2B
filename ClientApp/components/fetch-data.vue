@@ -1,11 +1,13 @@
 ﻿<template>
     <div>
         <h1>Weather forecast</h1>
-
+    
         <p>This component demonstrates fetching data from the server.</p>
-
-        <p v-if="!forecasts"><em>Loading...</em></p>
-
+    
+        <p v-if="!forecasts">
+            <em>Loading...</em>
+        </p>
+    
         <table class="table" v-if="forecasts">
             <thead>
                 <tr>
@@ -16,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="forecast in forecasts" >
+                <tr v-for="forecast in forecasts">
                     <td>{{ forecast.dateFormatted }}</td>
                     <td>{{ forecast.temperatureC }}</td>
                     <td>{{ forecast.temperatureF }}</td>
@@ -24,8 +26,7 @@
                 </tr>
             </tbody>
         </table>
-        
-
+    
     </div>
 </template>
 
@@ -63,4 +64,5 @@ export default {
 </script>
 
 <style>
+
 </style>
