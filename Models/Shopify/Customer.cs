@@ -19,7 +19,7 @@ namespace IronRebelB2B.Models
         public IEnumerable<Address> Addresses { get; set; }
 
         /// <summary>
-        /// The date and time when the customer was created. 
+        /// The date and time when the customer was created.
         /// </summary>
         [JsonProperty("created_at")]
         public DateTimeOffset? CreatedAt { get; set; }
@@ -99,7 +99,7 @@ namespace IronRebelB2B.Models
         public string Tags { get; set; }
 
         /// <summary>
-        /// Indicates whether the customer should be charged taxes when placing orders. 
+        /// Indicates whether the customer should be charged taxes when placing orders.
         /// </summary>
         [JsonProperty("tax_exempt")]
         public bool? TaxExempt { get; set; }
@@ -112,7 +112,7 @@ namespace IronRebelB2B.Models
         public decimal? TotalSpent { get; set; }
 
         /// <summary>
-        /// The date and time when the customer information was updated. 
+        /// The date and time when the customer information was updated.
         /// </summary>
         [JsonProperty("updated_at")]
         public DateTimeOffset? UpdatedAt { get; set; }

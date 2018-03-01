@@ -19,14 +19,13 @@ module.exports = (env) => {
         },
         entry: {
             vendor: [
-            'jquery',
-            'bootstrap',
-            'bootstrap/dist/css/bootstrap.css',
             'event-source-polyfill',
             'vue',
             'vuex',
             'axios',
-            'vue-router'
+            'vue-router',
+            'vuetify',
+            'vuetify/dist/vuetify.min.css'
             ],
         },
         output: {

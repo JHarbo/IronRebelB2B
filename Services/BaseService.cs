@@ -3,39 +3,30 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using Microsoft.Extensions.Options;
+using IronRebelB2B.Models;
 
 namespace IronRebelB2B.Services
 {
     public class BaseService
     {
-        private readonly Settings _settings;
-
-        public BaseService()
+        private readonly ShopifyCredentials _creds;
+        public BaseService(ShopifyCredentials creds)
         {
-            _settings = GetSettings();
+            _creds = creds;
         }
-
         public HttpClientHandler GetAuthHandle()
         {
             return new HttpClientHandler
             {
-                Credentials = new NetworkCredential(_settings.API_KEY, _settings.PASSWORD),
+                Credentials = new NetworkCredential(_creds.API_KEY, _creds.PASSWORD),
                 PreAuthenticate = true
             };
         }
 
         public string GetUrl()
         {
-            return $@"https://{_settings.HOSTNAME}";
-        }
-
-        public Settings GetSettings()
-        {
-            using (StreamReader r = File.OpenText("key.json"))
-            {
-                string json = r.ReadToEnd();
-                return JsonConvert.DeserializeObject<Settings>(json);
-            }
+            return $@"https://{_creds.HOSTNAME}";
         }
     }
 }

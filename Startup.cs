@@ -8,8 +8,12 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using IronRebelB2B.Models;
 
-namespace Vue2Spa
+namespace IronRebelB2B
 {
     public class Startup
     {
@@ -19,6 +23,8 @@ namespace Vue2Spa
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("shopify.key.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("jwt.key.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -29,7 +35,14 @@ namespace Vue2Spa
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddEntityFramework()
+              .AddDbContext<UserDbContext>(opt => opt.UseInMemoryDatabase());
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<UserDbContext>();
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<ShopifyCredentials>(Configuration);
+            services.Configure<JWTToken>(Configuration);
             services.AddRouting(options => options.LowercaseUrls = true);
         }
 
@@ -53,6 +66,8 @@ namespace Vue2Spa
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

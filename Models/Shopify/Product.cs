@@ -32,7 +32,7 @@ namespace IronRebelB2B.Models
         public DateTimeOffset? UpdatedAt { get; set; }
 
         /// <summary>
-        /// The date and time when the product was published. The API returns this value in ISO 8601 format. 
+        /// The date and time when the product was published. The API returns this value in ISO 8601 format.
         /// Set to NULL to unpublish a product
         /// </summary>
         [JsonProperty("published_at", DefaultValueHandling = DefaultValueHandling.Include, NullValueHandling = NullValueHandling.Include)]
@@ -88,7 +88,7 @@ namespace IronRebelB2B.Models
 
         /// <summary>
         /// Custom product property names like "Size", "Color", and "Material".
-        /// Products are based on permutations of these options. 
+        /// Products are based on permutations of these options.
         /// A product may have a maximum of 3 options. 255 characters limit each.
         /// </summary>
         [JsonProperty("options")]

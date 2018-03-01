@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using IronRebelB2B.Models;
 using Newtonsoft.Json;
-
+using Microsoft.Extensions.Options;
 
 namespace IronRebelB2B.Services
 {
@@ -11,7 +11,7 @@ namespace IronRebelB2B.Services
     {
         private readonly string _url;
 
-        public ProductService()
+        public ProductService(ShopifyCredentials creds) : base(creds)
         {
             _url = base.GetUrl();
         }
@@ -22,7 +22,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Products>(await httpClient.GetStringAsync(uri));
             }
@@ -34,7 +34,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Products>(await httpClient.GetStringAsync(uri));
             }
@@ -46,7 +46,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<dynamic>(await httpClient.GetStringAsync(uri)).count;
 
@@ -59,7 +59,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Products>(await httpClient.GetStringAsync(uri));
             }
@@ -71,7 +71,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Products>(await httpClient.GetStringAsync(uri));
             }
@@ -84,7 +84,7 @@ namespace IronRebelB2B.Services
 
             string uri = _url + resource;
 
-            using (var httpClient = new HttpClient(GetAuthHandle()))
+            using (var httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Products>(await httpClient.GetStringAsync(uri));
             }

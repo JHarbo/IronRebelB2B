@@ -7,7 +7,7 @@ namespace IronRebelB2B.ViewModels
     {
         public long? Id { get; set; }
         public string Title { get; set; }
-        public string ImageSrc {get; set; }
+        public string ImageSrc { get; set; }
         public IEnumerable<Variant> Variants { get; set; }
 
         public class Variant

@@ -1,27 +1,21 @@
 <template>
-    <div id="app" class="container-fluid">
-        <div>
-            <nav-menu></nav-menu>
-        </div>
-        <div style="margin-top: 60px">
-            <router-view></router-view>
-        </div>
-    </div>
-
+    <v-app id="app">
+        <nav-menu></nav-menu>
+        <main>
+            <v-container fluid>
+                <transition name="fade">
+                    <router-view></router-view>
+                </transition>
+            </v-container>
+        </main>
+    </v-app>
 </template>
 
 <script>
 import Vue from 'vue'
-import CounterExample from './counter-example'
-import FetchData from './fetch-data'
-import HomePage from './home-page'
 import NavMenu from './nav-menu'
 import ProductPage from './product-page'
-import ProductCard from './product-card'
 
-Vue.component('counter-example', CounterExample);
-Vue.component('fetch-data', FetchData);
-Vue.component('home-page', HomePage);
 Vue.component('nav-menu', NavMenu);
 Vue.component('product-page', ProductPage);
 
@@ -33,5 +27,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition-property: opacity;
+    transition-duration: .10s;
+}
+
+.fade-enter-active {
+    transition-delay: .10;
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0
+}
 </style>

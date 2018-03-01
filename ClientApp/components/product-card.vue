@@ -1,40 +1,47 @@
 <template>
-    <div class="product-card raised">
-        <div class="text-center title">
+    <v-card class="product-card raised">
+        <v-card-title class="title">
             {{ product.title }}
-        </div>
+        </v-card-title>
         <div class="content">
-            <div class="image">
-                <img :src="product.imageSrc" alt="" />
-            </div>
-            <div class="variants">
-                <table class="table table-xtra-condensed">
-                    <thead>
-                        <tr>
-                            <th>Variant</th>
-                            <th>Order</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="variant in product.variants">
-                            <td>{{ variant.title }}</td>
-                            <td>
-                                <input class="form-control" type="text" />
-                            </td>
-                            <td>{{ variant.inventoryQuantity }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <v-container fluid>
+                <v-layout>
+                    <v-flex xs6>
+                        <img :src="product.imageSrc" alt="" />
+                    </v-flex>
+                    <v-flex xs6 id="variant">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>variant</th>
+                                    <th>order</th>
+                                    <th>stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="variant in product.variants">
+                                    <td>{{ variant.title }}</td>
+                                    <td>
+                                        <div class="group">
+                                            <input type="text">
+                                            <span class="bar"></span>
+                                        </div>
+                                    </td>
+                                    <td>{{ variant.inventoryQuantity }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </v-flex>
+                </v-layout>
+            </v-container>
         </div>
-        <div class="action">
-            <button class="btn btn-success pull-right" @click="addToCart(product.id)">
-                <i class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></i>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="green darken-1" flat @click="addToCart()">
                 Add to Cart
-            </button>
-        </div>
-    </div>
+            </v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 
 
@@ -44,15 +51,35 @@ import * as type from '../store/mutation-types'
 
 
 export default {
+
+    data() {
+        return {
+            test: []
+        }
+    },
+
     props: {
         product: Object
     },
 
+    computed: {
+        ...mapGetters({
+            products: 'allProducts',
+        })
+    },
+
     methods: {
-        addToCart(productId) {
-            let item = this.$store.state.products.products.find(product => product.id == productId);
-            console.log(item);
-            this.$store.commit(type.CART_ADD_ITEM, { item: item });
+        addToCart() {
+            let item = this.products.find(product => product.id == this.product.id);
+            this.$store.commit(type.CART.ADD_ITEM, {
+                item: {
+                    id: item.id,
+                    title: item.title,
+                    imageSrc: item.imageSrc,
+                    variants: this.test
+                }
+            });
+            console.log(this.test);
         }
     }
 }
@@ -60,28 +87,28 @@ export default {
 
 <style scoped>
 .product-card {
-    width: 370px;
-    height: 330px;
+    width: 390px;
     display: inline-block;
     margin: 5px;
 }
 
-.title {
-    padding: 4px;
-    font-weight: bold;
-    font-size: 16px;
+.product-card .title {
+    padding-bottom: 10px;
+    font-size: 16px !important;
 }
 
 .content {
-    height: 255px;
+    height: 300px;
     overflow-y: hidden;
 }
 
-.image,
-.variants {
-    width: 50%;
-    float: left;
-    padding: 0 5px 0 5px;
+.content .container {
+    padding: 5px;
+    height: 100%;
+}
+
+.content .container .layout {
+    height: 100%;
 }
 
 img {
@@ -89,31 +116,64 @@ img {
     max-width: 100%;
 }
 
-.variants {
+#variant {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 100%;
 }
 
-.variants input {
-    width: 50px;
-    border-radius: 0;
+table.table thead tr {
+    height: 20px;
 }
 
-
-/*.action {
-    }*/
-
-button {
-    margin: 4px;
+table.table thead th,
+table.table tbody td {
+    padding: 0;
+    text-align: left;
 }
 
-.table-xtra-condensed>thead>tr>th,
-.table-xtra-condensed>tbody>tr>th,
-.table-xtra-condensed>tfoot>tr>th,
-.table-xtra-condensed>thead>tr>td,
-.table-xtra-condensed>tbody>tr>td,
-.table-xtra-condensed>tfoot>tr>td {
-    padding: 2px;
+.group {
+    position: relative;
+}
+
+input {
+    font-size: 18px;
+    display: block;
+    width: 40px;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+
+input:focus {
+    outline: none;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 40px;
+}
+
+.bar:before,
+.bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0;
+    position: absolute;
+    background: #5264AE;
+    transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+input:focus~.bar:before,
+input:focus~.bar:after {
+    width: 50%;
 }
 </style>

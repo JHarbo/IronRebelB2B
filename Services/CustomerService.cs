@@ -8,13 +8,20 @@ namespace IronRebelB2B.Services
 {
     public class CustomerService : BaseService
     {
+        private readonly string _url;
+
+        public CustomerService(ShopifyCredentials creds) : base(creds)
+        {
+            _url = base.GetUrl();
+        }
+
         public async Task<List<Customer>> GetAllAsync()
         {
             string resource = "/admin/customers.json";
 
-            string uri = GetUrl() + resource;
+            string uri = base.GetUrl() + resource;
 
-            using (HttpClient httpClient = new HttpClient(GetAuthHandle()))
+            using (HttpClient httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<List<Customer>>(await httpClient.GetStringAsync(uri));
             }
@@ -24,9 +31,9 @@ namespace IronRebelB2B.Services
         {
             string resource = $@"/admin/customers.json?ids={id}";
 
-            string uri = GetUrl() + resource;
+            string uri = base.GetUrl() + resource;
 
-            using (HttpClient httpClient = new HttpClient(GetAuthHandle()))
+            using (HttpClient httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<Customer>(await httpClient.GetStringAsync(uri));
             }
@@ -36,9 +43,9 @@ namespace IronRebelB2B.Services
         {
             string resource = $@"/admin/customers.json?ids={string.Join(",", ids)}";
 
-            string uri = GetUrl() + resource;
+            string uri = base.GetUrl() + resource;
 
-            using (HttpClient httpClient = new HttpClient(GetAuthHandle()))
+            using (HttpClient httpClient = new HttpClient(base.GetAuthHandle()))
             {
                 return JsonConvert.DeserializeObject<List<Customer>>(await httpClient.GetStringAsync(uri));
             }

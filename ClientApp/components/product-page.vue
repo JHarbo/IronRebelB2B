@@ -1,13 +1,17 @@
 <template>
-    <div>
-        <shopping-cart></shopping-cart>
-        <div class="container">
-            <product-card v-for="product in products" :product="product" track-by="id"></product-card>
-        </div>
-        <div class="text-center" style="margin: 10px">
-            <button class="btn btn-primary" @click="getNextPage()" v-if="products.length > 0"> Load more shit yo </button>
-        </div>
-    </div>
+    <v-container fluid>
+        <v-layout>
+            <v-flex id="content" xs8 offset-xs1>
+                <product-card v-for="product in products" :product="product"></product-card>
+                <div id="action">
+                    <v-btn primary @click="getNextPage()" v-if="isEmpty" :disabled="isLastPage"> Show more </v-btn>
+                </div>
+            </v-flex>
+            <v-flex id="cart" xs3>
+                <shopping-cart></shopping-cart>
+            </v-flex>
+        </v-layout>
+    </v-container fluid>
 </template>
 
 <script>
@@ -20,7 +24,6 @@ export default {
 
     data() {
         return {
-            //productVariants: []
         }
     },
 
@@ -29,27 +32,45 @@ export default {
         ShoppingCart
     },
 
-    computed: mapGetters({
-        products: 'allProducts',
-        pageNr: 'pageNr'
-    }),
+    computed: {
+        ...mapGetters({
+            products: 'allProducts',
+            pageNr: 'pageNr',
+            pageCount: 'pageCount'
+        }),
+        isEmpty() {
+            return this.products.length > 0;
+        },
+        isLastPage() {
+            return this.pageNr >= this.pageCount;
+        }
+    },
 
 
     methods: {
+        getPageCount() {
+            this.$store.dispatch('getPageCount');
+        },
+
         getNextPage() {
-            let pageToGet = this.pageNr + 1;
-            this.$store.commit(type.PRODUCT_PAGE_SET_PAGE_NR, { pageNr: pageToGet });
-            this.$store.dispatch('getProductPage', { pageNr: pageToGet });
+            let pageToFetch = this.pageNr + 1;
+            this.$store.commit(type.PRODUCT_PAGE.SET_CURRENT_PAGE, { pageNr: pageToFetch });
+            this.$store.dispatch('getProductPage', { pageNr: pageToFetch });
         }
     },
 
     created() {
         this.getNextPage();
-    }
+        this.getPageCount();
+        document.title = 'Iron Rebel | Collection';
+    },
 
 }
 </script>
 
-<style>
-
+<style scoped>
+#action {
+    margin-top: 10px;
+    text-align: center;
+}
 </style>

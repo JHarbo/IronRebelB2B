@@ -1,6 +1,6 @@
-﻿namespace IronRebelB2B.Services
+﻿namespace IronRebelB2B.Models
 {
-    public class Settings
+    public class ShopifyCredentials
     {
         public string API_KEY { get; set; }
         public string PASSWORD { get; set; }
